@@ -4,6 +4,8 @@ import { useCurrencyStore } from '@/stores'
 import { isSupabaseConfigured, supabase } from '@/api/supabase'
 import type { CurrencyCode } from '@/types'
 
+const isVercel = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+
 export default function Settings() {
   const { user, signOut } = useAuth()
   const { data: _familyData } = useFamily() // 가족 데이터 로드 (캐시 유지)
@@ -17,7 +19,10 @@ export default function Settings() {
     setTesting(true)
     try {
       if (!isSupabaseConfigured) {
-        setTestResult('❌ .env에 URL/키가 없어요. .env 저장 후 앱을 완전히 끄고 실행.bat 다시 실행하세요.')
+        const msg = isVercel
+          ? '❌ Vercel에 환경 변수가 없어요. vercel.com → 이 프로젝트 → Settings → Environment Variables에서 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY 추가 후 Deployments에서 Redeploy 하세요.'
+          : '❌ .env에 URL/키가 없어요. .env 저장 후 앱을 완전히 끄고 실행.bat 다시 실행하세요.'
+        setTestResult(msg)
         return
       }
       const { error } = await supabase.from('families').select('id').limit(1)
@@ -40,7 +45,11 @@ export default function Settings() {
       <section className="rounded-lg bg-slate-100 p-4">
         <h3 className="text-sm font-medium text-slate-700 mb-2">Supabase 연결 확인</h3>
         <p className="text-xs text-slate-600 mb-2">
-          .env 로드: {isSupabaseConfigured ? '됨' : '안 됨 (앱 재시작 필요)'}
+          {isSupabaseConfigured
+            ? '연결 정보: 설정됨'
+            : isVercel
+              ? 'Environment Variables 없음 (Vercel에서 설정 후 Redeploy)'
+              : '.env 로드: 안 됨 (앱 재시작 필요)'}
         </p>
         <button
           type="button"
