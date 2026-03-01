@@ -50,19 +50,19 @@ export default function Transactions() {
     return (
       <div className="p-6 flex flex-col items-center justify-center min-h-[50vh]">
         <h2 className="text-xl font-semibold text-slate-800 mb-2">거래내역</h2>
-        <p className="text-slate-600 text-sm mb-6">누구로 들어갈까요?</p>
-        <div className="flex gap-4 w-full max-w-xs">
+        <p className="text-slate-500 text-sm mb-6">누구로 들어갈까요?</p>
+        <div className="flex gap-3 w-full max-w-xs">
           <button
             type="button"
             onClick={() => signIn('user1')}
-            className="flex-1 py-4 rounded-xl bg-primary text-white font-medium shadow"
+            className="flex-1 py-4 rounded-2xl bg-primary text-white font-medium shadow-card hover:bg-primary-light transition-colors"
           >
             남편
           </button>
           <button
             type="button"
             onClick={() => signIn('user2')}
-            className="flex-1 py-4 rounded-xl bg-primary/80 text-white font-medium shadow"
+            className="flex-1 py-4 rounded-2xl bg-primary/90 text-white font-medium shadow-card hover:bg-primary-light transition-colors"
           >
             아내
           </button>
@@ -82,8 +82,8 @@ export default function Transactions() {
   if (!familyId) {
     return (
       <div className="p-4">
-        <h2 className="text-xl font-semibold text-slate-800 mb-4">거래내역</h2>
-        <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 space-y-3">
+        <h2 className="text-xl font-semibold text-slate-800 mb-4 px-1">거래내역</h2>
+        <div className="rounded-2xl bg-amber-50 border border-amber-200/80 p-4 text-sm text-amber-800 space-y-3 shadow-card">
           <p className="font-medium">거래를 저장하려면 Supabase를 연결해 주세요.</p>
           <ol className="list-decimal list-inside space-y-2 text-amber-900">
             <li><a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="underline">supabase.com</a> 가입 후 <strong>New Project</strong> 생성</li>
@@ -129,15 +129,15 @@ export default function Transactions() {
         <span className="text-sm text-slate-500">{user.displayName}</span>
       </div>
 
-      <section className="rounded-xl bg-white border border-slate-200 p-4 shadow-sm">
+      <section className="rounded-2xl bg-white border border-slate-200/60 p-4 shadow-card">
         <h3 className="text-sm font-medium text-slate-600 mb-3">내역 추가</h3>
         <div className="space-y-3">
-          <div className="flex gap-2">
+          <div className="flex gap-2 p-1 rounded-xl bg-slate-100/80">
             <button
               type="button"
               onClick={() => setType('expense')}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                type === 'expense' ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-600'
+              className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                type === 'expense' ? 'bg-rose-100 text-rose-800 shadow-sm' : 'text-slate-600'
               }`}
             >
               지출
@@ -145,8 +145,8 @@ export default function Transactions() {
             <button
               type="button"
               onClick={() => setType('income')}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium ${
-                type === 'income' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
+              className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                type === 'income' ? 'bg-emerald-100 text-emerald-800 shadow-sm' : 'text-slate-600'
               }`}
             >
               소득
@@ -159,12 +159,12 @@ export default function Transactions() {
               placeholder="금액"
               value={amount}
               onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))}
-              className="flex-1 rounded-lg border border-slate-300 px-3 py-2.5 text-slate-800"
+              className="flex-1 rounded-xl border border-slate-200 px-3 py-2.5 text-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition"
             />
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-              className="rounded-lg border border-slate-300 px-3 py-2.5 text-slate-800 bg-white"
+              className="rounded-xl border border-slate-200 px-3 py-2.5 text-slate-800 bg-white focus:ring-2 focus:ring-primary/20 outline-none"
             >
               <option value="KRW">₩ KRW</option>
               <option value="CNY">¥ CNY</option>
@@ -175,20 +175,20 @@ export default function Transactions() {
             placeholder="메모 (선택)"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-800"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition"
           />
           <button
             type="button"
             onClick={() => addMutation.mutate()}
             disabled={addMutation.isPending || !amount.trim()}
-            className="w-full py-2.5 rounded-lg bg-primary text-white font-medium disabled:opacity-50"
+            className="w-full py-2.5 rounded-xl bg-primary text-white font-medium disabled:opacity-50 hover:bg-primary-light transition-colors shadow-card"
           >
             {addMutation.isPending ? '저장 중…' : '추가'}
           </button>
         </div>
       </section>
 
-      <section className="rounded-lg bg-slate-100 p-3">
+      <section className="rounded-2xl bg-slate-100/80 border border-slate-200/60 p-4 shadow-card">
         <p className="text-xs text-slate-500 mb-1">현재 기준 통화 합계</p>
         <p className="text-lg font-semibold text-slate-800">
           {baseCurrency === 'KRW'
@@ -198,17 +198,19 @@ export default function Transactions() {
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-slate-600 mb-2">최근 내역</h3>
+        <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">최근 내역</h3>
         {listLoading ? (
           <p className="text-slate-500 text-sm">로딩 중…</p>
         ) : transactions.length === 0 ? (
-          <p className="text-slate-500 text-sm">아직 내역이 없습니다.</p>
+          <div className="rounded-2xl bg-white border border-slate-200/60 p-6 text-center shadow-card">
+            <p className="text-slate-500 text-sm">아직 내역이 없습니다.</p>
+          </div>
         ) : (
           <ul className="space-y-2">
             {transactions.map((tx) => (
               <li
                 key={tx.id}
-                className="flex justify-between items-start rounded-lg bg-white border border-slate-200 p-3"
+                className="flex justify-between items-start rounded-2xl bg-white border border-slate-200/60 p-3 shadow-card"
               >
                 <div>
                   <p className={`font-medium ${tx.type === 'income' ? 'text-emerald-700' : 'text-slate-800'}`}>

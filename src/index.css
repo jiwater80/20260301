@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  line-height: 1.5;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
   color: #0f172a;
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -19,4 +21,14 @@ body {
 #root {
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* 부드러운 스크롤 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 네비게이션 활성 탭 강조 */
+nav a.active {
+  font-weight: 600;
 }

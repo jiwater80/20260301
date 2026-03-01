@@ -8,22 +8,27 @@ const navItems = [
 
 export default function Layout() {
   return (
-    <div className="min-h-dvh flex flex-col bg-slate-50">
-      <header className="sticky top-0 z-10 bg-primary text-white shadow">
-        <h1 className="text-lg font-semibold py-3 px-4 text-center">한-중 가계부</h1>
+    <div className="min-h-dvh flex flex-col bg-slate-50/80">
+      <header className="sticky top-0 z-10 bg-primary text-white shadow-header">
+        <div className="max-w-lg mx-auto px-4 py-3.5">
+          <h1 className="text-lg font-semibold tracking-tight text-center">한-중 가계부</h1>
+          <p className="text-xs text-white/80 text-center mt-0.5">실시간 환율 가계부</p>
+        </div>
       </header>
-      <main className="flex-1 overflow-auto pb-20">
+      <main className="flex-1 overflow-auto pb-24 max-w-lg mx-auto w-full">
         <Outlet />
       </main>
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 safe-area-pb">
-        <ul className="flex justify-around py-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-10 bg-white/95 backdrop-blur-sm border-t border-slate-200/80 safe-area-pb shadow-[0_-2px_10px_-2px_rgba(0,0,0,0.06)]">
+        <ul className="flex justify-around items-center max-w-lg mx-auto h-14">
           {navItems.map(({ to, label }) => (
-            <li key={to}>
+            <li key={to} className="flex-1 flex justify-center">
               <NavLink
                 to={to}
                 className={({ isActive }) =>
-                  `block px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    isActive ? 'text-primary bg-primary/10' : 'text-slate-600 hover:text-primary'
+                  `flex items-center justify-center w-full h-full text-sm font-medium transition-colors rounded-lg mx-1 ${
+                    isActive
+                      ? 'text-primary bg-primary/10'
+                      : 'text-slate-500 hover:text-slate-700'
                   }`
                 }
               >

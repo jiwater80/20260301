@@ -40,9 +40,9 @@ export default function Settings() {
 
   return (
     <div className="p-4 space-y-6">
-      <h2 className="text-xl font-semibold text-slate-800">설정</h2>
+      <h2 className="text-xl font-semibold text-slate-800 px-1">설정</h2>
 
-      <section className="rounded-lg bg-slate-100 p-4">
+      <section className="rounded-2xl bg-slate-100/80 border border-slate-200/60 p-4 shadow-card">
         <h3 className="text-sm font-medium text-slate-700 mb-2">Supabase 연결 확인</h3>
         <p className="text-xs text-slate-600 mb-2">
           {isSupabaseConfigured
@@ -55,41 +55,41 @@ export default function Settings() {
           type="button"
           onClick={testConnection}
           disabled={testing}
-          className="py-2 px-4 rounded-lg bg-primary text-white text-sm font-medium disabled:opacity-50"
+          className="py-2.5 px-4 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-50 hover:bg-primary-light transition-colors shadow-card"
         >
           {testing ? '확인 중…' : '연결 테스트'}
         </button>
         {testResult && (
-          <p className="mt-2 text-sm whitespace-pre-wrap break-words">{testResult}</p>
+          <p className="mt-2 text-sm whitespace-pre-wrap break-words text-slate-700">{testResult}</p>
         )}
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-slate-600 mb-2">기준 통화 (합산 표시)</h3>
-        <div className="flex gap-3">
+        <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">기준 통화 (합산 표시)</h3>
+        <div className="flex gap-2 p-1 rounded-xl bg-slate-100/80">
           {(['KRW', 'CNY'] as CurrencyCode[]).map((code) => (
             <button
               key={code}
               type="button"
               onClick={() => setBaseCurrency(code)}
-              className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-colors ${
+              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
                 baseCurrency === code
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                  ? 'bg-primary text-white shadow-card'
+                  : 'text-slate-600 hover:bg-slate-200/80'
               }`}
             >
               {code === 'KRW' ? '원화 (₩)' : '위안 (¥)'}
             </button>
           ))}
         </div>
-        <p className="mt-1.5 text-xs text-slate-500">
+        <p className="mt-1.5 text-xs text-slate-500 px-1">
           대시보드·합산 금액을 이 통화로 표시합니다.
         </p>
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-slate-600 mb-2">현재 환율</h3>
-        <div className="rounded-lg bg-slate-100 p-4">
+        <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">현재 환율</h3>
+        <div className="rounded-2xl bg-slate-100/80 border border-slate-200/60 p-4 shadow-card">
           {isLoading && (
             <p className="text-sm text-slate-500">환율 조회 중…</p>
           )}
@@ -111,15 +111,17 @@ export default function Settings() {
 
       {user && (
         <section>
-          <h3 className="text-sm font-medium text-slate-600 mb-2">들어온 계정</h3>
-          <p className="text-slate-800 font-medium mb-2">{user.displayName}</p>
-          <button
-            type="button"
-            onClick={() => signOut()}
-            className="py-2 px-4 rounded-lg border border-slate-300 text-slate-700 text-sm"
-          >
-            나가기 (다른 사람으로 들어가기)
-          </button>
+          <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">들어온 계정</h3>
+          <div className="rounded-2xl bg-white border border-slate-200/60 p-4 shadow-card">
+            <p className="text-slate-800 font-medium mb-3">{user.displayName}</p>
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 text-sm hover:bg-slate-50 transition-colors"
+            >
+              나가기 (다른 사람으로 들어가기)
+            </button>
+          </div>
         </section>
       )}
     </div>
