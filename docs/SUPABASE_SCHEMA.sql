@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS public.families (
 );
 
 -- 2) 가족 멤버 (user_id = 'user1' | 'user2')
+-- joined_at: 앱에서 참여한 시점. 둘 다 연결될 때까지 대시보드 비노출용
 CREATE TABLE IF NOT EXISTS public.family_members (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   family_id UUID NOT NULL REFERENCES public.families(id) ON DELETE CASCADE,
   user_id TEXT NOT NULL,
   display_name TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  joined_at TIMESTAMPTZ DEFAULT NULL,
   UNIQUE(family_id, user_id)
 );
 

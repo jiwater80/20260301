@@ -5,6 +5,7 @@ import { useCurrencyStore } from '@/stores'
 import { insertTransaction } from '@/api/transactions'
 import { isSupabaseConfigured } from '@/api/supabase'
 import FamilyConnect from '@/components/FamilyConnect'
+import WaitingForPartner from '@/components/WaitingForPartner'
 import { toBaseKrw } from '@/utils/currency'
 import type { CurrencyCode, TransactionType } from '@/types'
 import { formatAmount, formatDate } from '@/utils/format'
@@ -14,7 +15,8 @@ export default function Transactions() {
   const { user, signIn } = useAuth()
   const { data: familyData, isLoading: familyLoading } = useFamily()
   const familyId = familyData?.family?.id ?? null
-  useRealtimeTransactions(familyId)
+  const bothConnected = familyData?.bothConnected ?? false
+  useRealtimeTransactions(bothConnected ? familyId : null)
 
   const { data: transactions = [], isLoading: listLoading } = useTransactions(familyId)
   const { data: rate } = useExchangeRate()
@@ -77,6 +79,15 @@ export default function Transactions() {
     return (
       <div className="p-4">
         <p className="text-slate-600">로딩 중…</p>
+      </div>
+    )
+  }
+
+  if (familyId && !bothConnected && familyData) {
+    return (
+      <div className="p-4 space-y-4">
+        <h2 className="text-xl font-semibold text-slate-800 px-1">거래내역</h2>
+        <WaitingForPartner family={familyData.family} />
       </div>
     )
   }

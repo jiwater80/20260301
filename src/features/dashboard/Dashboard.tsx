@@ -13,12 +13,14 @@ import { useFamily, useTransactions, useExchangeRate } from '@/hooks'
 import { useCurrencyStore } from '@/stores'
 import { isSupabaseConfigured } from '@/api/supabase'
 import FamilyConnect from '@/components/FamilyConnect'
+import WaitingForPartner from '@/components/WaitingForPartner'
 import { groupTransactionsByPeriod, getTotals, type PeriodType } from '@/utils/aggregate'
 
 export default function Dashboard() {
   const { data: familyData } = useFamily()
   const familyId = familyData?.family?.id ?? null
-  const { data: transactions = [], isLoading } = useTransactions(familyId)
+  const bothConnected = familyData?.bothConnected ?? false
+  const { data: transactions = [], isLoading } = useTransactions(bothConnected ? familyId : null)
   const { data: rate } = useExchangeRate()
   const { baseCurrency } = useCurrencyStore()
 
@@ -40,6 +42,15 @@ export default function Dashboard() {
     baseCurrency === 'KRW'
       ? `${v.toLocaleString('ko-KR')} ₩`
       : `${(v / rateKrw).toFixed(2)} ¥`
+
+  if (familyId && !bothConnected && familyData) {
+    return (
+      <div className="p-5 space-y-4">
+        <h2 className="text-xl font-semibold text-slate-800 px-1">대시보드</h2>
+        <WaitingForPartner family={familyData.family} />
+      </div>
+    )
+  }
 
   if (!familyId) {
     return (
