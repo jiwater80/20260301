@@ -16,7 +16,7 @@ export async function getFamily(): Promise<{ family: Family } | null> {
   return { family: data as Family }
 }
 
-/** 가족 만들기 (처음 쓰는 사람용). 초대 코드 반환. */
+/** 가족 만들기 (처음 쓰는 사람용). 초대 코드 화면에서 "시작하기" 누를 때만 저장하므로 여기서는 localStorage에 넣지 않음. */
 export async function createFamily(): Promise<{ family: Family; inviteCode: string } | null> {
   if (!isSupabaseConfigured) return null
 
@@ -35,12 +35,16 @@ export async function createFamily(): Promise<{ family: Family; inviteCode: stri
   ])
   if (membersError) return null
 
+  return { family: family as Family, inviteCode }
+}
+
+/** 가족 ID를 저장 (초대 코드 화면에서 "시작하기" 눌렀을 때 호출) */
+export function setStoredFamilyId(familyId: string): void {
   try {
-    localStorage.setItem(STORAGE_FAMILY_ID, family.id)
+    if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_FAMILY_ID, familyId)
   } catch {
     // ignore
   }
-  return { family: family as Family, inviteCode }
 }
 
 /** 초대 코드로 가족 참여 (둘째 사람용) */

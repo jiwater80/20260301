@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { createFamily, joinFamily } from '@/api/families'
+import { createFamily, joinFamily, setStoredFamilyId } from '@/api/families'
 import { useAuth } from '@/hooks/useAuth'
 
 const FAMILY_QUERY_KEY = ['myFamily'] as const
@@ -12,6 +12,7 @@ export default function FamilyConnect() {
   const { user } = useAuth()
   const [step, setStep] = useState<Step>('choose')
   const [inviteCode, setInviteCode] = useState('')
+  const [createdFamilyId, setCreatedFamilyId] = useState<string | null>(null)
   const [joinCode, setJoinCode] = useState('')
   const [joinError, setJoinError] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
@@ -25,8 +26,8 @@ export default function FamilyConnect() {
       const result = await createFamily()
       if (result) {
         setInviteCode(result.inviteCode)
+        setCreatedFamilyId(result.family.id)
         setStep('created')
-        // 초대 코드 화면 유지. 나중에 페이지 이동 시 getFamily()로 연동됨
       } else {
         setJoinError('가족 만들기에 실패했어요. 다시 시도해 주세요.')
       }
@@ -89,7 +90,12 @@ export default function FamilyConnect() {
         </p>
         <button
           type="button"
-          onClick={() => queryClient.invalidateQueries({ queryKey: FAMILY_QUERY_KEY })}
+          onClick={() => {
+            if (createdFamilyId) {
+              setStoredFamilyId(createdFamilyId)
+              queryClient.invalidateQueries({ queryKey: FAMILY_QUERY_KEY })
+            }
+          }}
           className="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-medium"
         >
           시작하기
