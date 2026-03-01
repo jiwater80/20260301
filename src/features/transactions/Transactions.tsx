@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth, useFamily, useTransactions, useRealtimeTransactions, useExchangeRate } from '@/hooks'
 import { useCurrencyStore } from '@/stores'
 import { insertTransaction } from '@/api/transactions'
+import { isSupabaseConfigured } from '@/api/supabase'
+import FamilyConnect from '@/components/FamilyConnect'
 import { toBaseKrw } from '@/utils/currency'
 import type { CurrencyCode, TransactionType } from '@/types'
 import { formatAmount, formatDate } from '@/utils/format'
@@ -81,33 +83,37 @@ export default function Transactions() {
 
   if (!familyId) {
     return (
-      <div className="p-4">
-        <h2 className="text-xl font-semibold text-slate-800 mb-4 px-1">거래내역</h2>
-        <div className="rounded-2xl bg-amber-50 border border-amber-200/80 p-4 text-sm text-amber-800 space-y-3 shadow-card">
-          <p className="font-medium">거래를 저장하려면 Supabase를 연결해 주세요.</p>
-          <ol className="list-decimal list-inside space-y-2 text-amber-900">
-            <li><a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="underline">supabase.com</a> 가입 후 <strong>New Project</strong> 생성</li>
-            <li>왼쪽 메뉴 맨 아래 <strong>Project Settings</strong>(톱니바퀴 아이콘) 클릭 → 왼쪽에서 <strong>API</strong> 클릭</li>
-            <li>
-              <strong>Project URL</strong> 복사하기:
-              <span className="block mt-1 text-amber-800">화면에 &quot;Project URL&quot; 이라고 써 있는 줄이 있어요. 그 옆에 <code className="bg-amber-100 px-1 rounded">https://xxxxx.supabase.co</code> 처럼 생긴 주소가 보이면, 그걸 클릭해서 전체 선택한 뒤 복사(Ctrl+C) 하세요. 이게 &quot;프로젝트 URL&quot; 이에요.</span>
-            </li>
-            <li>
-              <strong>anon 키</strong> 복사하기:
-              <span className="block mt-1 text-amber-800">같은 API 페이지를 조금 아래로 내리면 &quot;Project API keys&quot; 섹션이 있어요. 그 안에 <strong>anon</strong> / <strong>public</strong> 이라고 적힌 행이 있고, 오른쪽에 아주 긴 영어+숫자 문자열이 보여요. 그 옆 <strong>복사 아이콘</strong>을 누르거나, 긴 문자열을 드래그해서 Ctrl+C로 복사하세요. 이게 anon 키예요.</span>
-            </li>
-            <li>
-              URL·anon 키 넣기:
-              <span className="block mt-1 text-amber-800">
-                <strong>지금 이 주소(vercel.app)로 접속 중이라면</strong> → <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="underline">vercel.com</a> 로그인 → 이 프로젝트 선택 → <strong>Settings → Environment Variables</strong>에서 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY</code> 추가 후 <strong>Deployments</strong>에서 Redeploy 한 번 하세요.
-              </span>
-              <span className="block mt-1 text-amber-800">
-                <strong>로컬(실행.bat)이라면</strong> → 프로젝트 폴더의 <code className="bg-amber-100 px-1 rounded">.env</code>에 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL=</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY=</code> 넣고 저장 후 <strong>실행.bat</strong> 다시 실행하세요.
-              </span>
-            </li>
-            <li>Supabase <strong>SQL Editor</strong>에서 <code className="bg-amber-100 px-1 rounded">docs/SUPABASE_SCHEMA.sql</code> 내용 실행</li>
-          </ol>
-        </div>
+      <div className="p-4 space-y-4">
+        <h2 className="text-xl font-semibold text-slate-800 px-1">거래내역</h2>
+        {!isSupabaseConfigured ? (
+          <div className="rounded-2xl bg-amber-50 border border-amber-200/80 p-4 text-sm text-amber-800 space-y-3 shadow-card">
+            <p className="font-medium">거래를 저장하려면 Supabase를 연결해 주세요.</p>
+            <ol className="list-decimal list-inside space-y-2 text-amber-900">
+              <li><a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="underline">supabase.com</a> 가입 후 <strong>New Project</strong> 생성</li>
+              <li>왼쪽 메뉴 맨 아래 <strong>Project Settings</strong>(톱니바퀴 아이콘) 클릭 → 왼쪽에서 <strong>API</strong> 클릭</li>
+              <li>
+                <strong>Project URL</strong> 복사하기:
+                <span className="block mt-1 text-amber-800">화면에 &quot;Project URL&quot; 이라고 써 있는 줄이 있어요. 그 옆에 <code className="bg-amber-100 px-1 rounded">https://xxxxx.supabase.co</code> 처럼 생긴 주소가 보이면, 그걸 클릭해서 전체 선택한 뒤 복사(Ctrl+C) 하세요. 이게 &quot;프로젝트 URL&quot; 이에요.</span>
+              </li>
+              <li>
+                <strong>anon 키</strong> 복사하기:
+                <span className="block mt-1 text-amber-800">같은 API 페이지를 조금 아래로 내리면 &quot;Project API keys&quot; 섹션이 있어요. 그 안에 <strong>anon</strong> / <strong>public</strong> 이라고 적힌 행이 있고, 오른쪽에 아주 긴 영어+숫자 문자열이 보여요. 그 옆 <strong>복사 아이콘</strong>을 누르거나, 긴 문자열을 드래그해서 Ctrl+C로 복사하세요. 이게 anon 키예요.</span>
+              </li>
+              <li>
+                URL·anon 키 넣기:
+                <span className="block mt-1 text-amber-800">
+                  <strong>지금 이 주소(vercel.app)로 접속 중이라면</strong> → <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="underline">vercel.com</a> 로그인 → 이 프로젝트 선택 → <strong>Settings → Environment Variables</strong>에서 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY</code> 추가 후 <strong>Deployments</strong>에서 Redeploy 한 번 하세요.
+                </span>
+                <span className="block mt-1 text-amber-800">
+                  <strong>로컬(실행.bat)이라면</strong> → 프로젝트 폴더의 <code className="bg-amber-100 px-1 rounded">.env</code>에 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL=</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY=</code> 넣고 저장 후 <strong>실행.bat</strong> 다시 실행하세요.
+                </span>
+              </li>
+              <li>Supabase <strong>SQL Editor</strong>에서 <code className="bg-amber-100 px-1 rounded">docs/SUPABASE_SCHEMA.sql</code> 내용 실행</li>
+            </ol>
+          </div>
+        ) : (
+          <FamilyConnect />
+        )}
       </div>
     )
   }

@@ -11,6 +11,8 @@ import {
 } from 'recharts'
 import { useFamily, useTransactions, useExchangeRate } from '@/hooks'
 import { useCurrencyStore } from '@/stores'
+import { isSupabaseConfigured } from '@/api/supabase'
+import FamilyConnect from '@/components/FamilyConnect'
 import { groupTransactionsByPeriod, getTotals, type PeriodType } from '@/utils/aggregate'
 
 export default function Dashboard() {
@@ -41,11 +43,15 @@ export default function Dashboard() {
 
   if (!familyId) {
     return (
-      <div className="p-5">
-        <h2 className="text-xl font-semibold text-slate-800 mb-4">대시보드</h2>
-        <div className="rounded-2xl bg-slate-100/80 p-6 text-center">
-          <p className="text-slate-600 text-sm">가족에 참여한 뒤 대시보드를 이용할 수 있습니다.</p>
-        </div>
+      <div className="p-5 space-y-4">
+        <h2 className="text-xl font-semibold text-slate-800 px-1">대시보드</h2>
+        {isSupabaseConfigured ? (
+          <FamilyConnect />
+        ) : (
+          <div className="rounded-2xl bg-slate-100/80 p-6 text-center">
+            <p className="text-slate-600 text-sm">Supabase 연결 후 가족을 만들거나 초대 코드로 참여하면 대시보드를 이용할 수 있습니다.</p>
+          </div>
+        )}
       </div>
     )
   }
