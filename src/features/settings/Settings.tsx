@@ -6,7 +6,7 @@ import type { CurrencyCode } from '@/types'
 
 export default function Settings() {
   const { user, signOut } = useAuth()
-  const { data: familyData } = useFamily()
+  const { data: _familyData } = useFamily() // 가족 데이터 로드 (캐시 유지)
   const { data: rate, isLoading, isError } = useExchangeRate()
   const { baseCurrency, setBaseCurrency } = useCurrencyStore()
   const [testResult, setTestResult] = useState<string | null>(null)

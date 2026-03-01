@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { listTransactions, subscribeTransactions } from '@/api/transactions'
+import { subscribeTransactions } from '@/api/transactions'
 import type { Transaction } from '@/types'
 
 const QUERY_KEY = (familyId: string) => ['transactions', familyId] as const

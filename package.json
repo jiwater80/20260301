@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "deploy": "npm run build && npx vercel --prod",
+    "deploy:preview": "npm run build && npx vercel"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

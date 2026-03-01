@@ -9,6 +9,9 @@ node_modules
 # Build
 dist
 *.local
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js
 
 # IDE / OS
 .vscode
