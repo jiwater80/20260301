@@ -96,8 +96,16 @@ export default function Transactions() {
               <strong>anon 키</strong> 복사하기:
               <span className="block mt-1 text-amber-800">같은 API 페이지를 조금 아래로 내리면 &quot;Project API keys&quot; 섹션이 있어요. 그 안에 <strong>anon</strong> / <strong>public</strong> 이라고 적힌 행이 있고, 오른쪽에 아주 긴 영어+숫자 문자열이 보여요. 그 옆 <strong>복사 아이콘</strong>을 누르거나, 긴 문자열을 드래그해서 Ctrl+C로 복사하세요. 이게 anon 키예요.</span>
             </li>
-            <li>프로젝트 폴더의 <code className="bg-amber-100 px-1 rounded">.env</code> 파일을 열고, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL=</code> 뒤에 아까 복사한 URL 붙여넣기, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY=</code> 뒤에 키 붙여넣기</li>
-            <li>SQL Editor에서 <code className="bg-amber-100 px-1 rounded">docs/SUPABASE_SCHEMA.sql</code> 내용 실행 후, <strong>실행.bat</strong> 다시 실행</li>
+            <li>
+              URL·anon 키 넣기:
+              <span className="block mt-1 text-amber-800">
+                <strong>지금 이 주소(vercel.app)로 접속 중이라면</strong> → <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="underline">vercel.com</a> 로그인 → 이 프로젝트 선택 → <strong>Settings → Environment Variables</strong>에서 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY</code> 추가 후 <strong>Deployments</strong>에서 Redeploy 한 번 하세요.
+              </span>
+              <span className="block mt-1 text-amber-800">
+                <strong>로컬(실행.bat)이라면</strong> → 프로젝트 폴더의 <code className="bg-amber-100 px-1 rounded">.env</code>에 <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_URL=</code>, <code className="bg-amber-100 px-1 rounded">VITE_SUPABASE_ANON_KEY=</code> 넣고 저장 후 <strong>실행.bat</strong> 다시 실행하세요.
+              </span>
+            </li>
+            <li>Supabase <strong>SQL Editor</strong>에서 <code className="bg-amber-100 px-1 rounded">docs/SUPABASE_SCHEMA.sql</code> 내용 실행</li>
           </ol>
         </div>
       </div>
