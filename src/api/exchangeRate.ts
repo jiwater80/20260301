@@ -1,12 +1,12 @@
 /**
- * KRW–CNY 실시간 환율 API (무료 엔드포인트 + 캐시)
- * - ExchangeRate-API open endpoint (CNY 기준 → KRW 환산)
- * - 캐시 1시간, 실패 시 폴백 상수
+ * KRW–CNY 환율 API (무료 엔드포인트 + 캐시)
+ * - 전날 기준 환율을 하루 1회 적용 (24시간 캐시)
+ * - open.er-api.com (CNY 기준 → KRW 환산), 실패 시 폴백 상수
  */
 import type { ExchangeRateResponse, ExchangeRateState } from '@/types'
 
 const CACHE_KEY = 'exchange_rate_krw_cny'
-const CACHE_TTL_MS = 1000 * 60 * 60 // 1시간
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24 // 24시간 (하루 1회 갱신)
 const FALLBACK_KRW_PER_CNY = 192 // API 실패 시 사용 (대략적 시세)
 
 const OPEN_ER_API = 'https://open.er-api.com/v6/latest/CNY'

@@ -12,7 +12,7 @@ export default function Layout() {
       <header className="sticky top-0 z-10 bg-primary text-white shadow-header">
         <div className="max-w-lg mx-auto px-4 py-3.5">
           <h1 className="text-lg font-semibold tracking-tight text-center">한-중 가계부</h1>
-          <p className="text-xs text-white/80 text-center mt-0.5">실시간 환율 가계부</p>
+          <p className="text-xs text-white/80 text-center mt-0.5">전일 기준 환율 · 한국돈 환산</p>
         </div>
       </header>
       <main className="flex-1 overflow-auto pb-24 max-w-lg mx-auto w-full">

@@ -4,8 +4,6 @@ import { useAuth, useFamily, useTransactions, useRealtimeTransactions, useExchan
 import { useCurrencyStore } from '@/stores'
 import { insertTransaction } from '@/api/transactions'
 import { isSupabaseConfigured } from '@/api/supabase'
-import FamilyConnect from '@/components/FamilyConnect'
-import WaitingForPartner from '@/components/WaitingForPartner'
 import { toBaseKrw } from '@/utils/currency'
 import type { CurrencyCode, TransactionType } from '@/types'
 import { formatAmount, formatDate } from '@/utils/format'
@@ -15,8 +13,7 @@ export default function Transactions() {
   const { user, signIn } = useAuth()
   const { data: familyData, isLoading: familyLoading } = useFamily()
   const familyId = familyData?.family?.id ?? null
-  const bothConnected = familyData?.bothConnected ?? false
-  useRealtimeTransactions(bothConnected ? familyId : null)
+  useRealtimeTransactions(familyId)
 
   const { data: transactions = [], isLoading: listLoading } = useTransactions(familyId)
   const { data: rate } = useExchangeRate()
@@ -83,15 +80,6 @@ export default function Transactions() {
     )
   }
 
-  if (familyId && !bothConnected && familyData) {
-    return (
-      <div className="p-4 space-y-4">
-        <h2 className="text-xl font-semibold text-slate-800 px-1">거래내역</h2>
-        <WaitingForPartner family={familyData.family} />
-      </div>
-    )
-  }
-
   if (!familyId) {
     return (
       <div className="p-4 space-y-4">
@@ -123,7 +111,9 @@ export default function Transactions() {
             </ol>
           </div>
         ) : (
-          <FamilyConnect />
+          <div className="rounded-2xl bg-slate-100/80 p-6 text-center">
+            <p className="text-slate-600 text-sm">가족 정보를 불러오는 중…</p>
+          </div>
         )}
       </div>
     )

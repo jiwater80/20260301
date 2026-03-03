@@ -88,7 +88,7 @@ export default function Settings() {
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">현재 환율</h3>
+        <h3 className="text-sm font-medium text-slate-500 mb-2 px-1">전일 기준 환율 (하루 1회 적용)</h3>
         <div className="rounded-2xl bg-slate-100/80 border border-slate-200/60 p-4 shadow-card">
           {isLoading && (
             <p className="text-sm text-slate-500">환율 조회 중…</p>
@@ -102,7 +102,7 @@ export default function Settings() {
                 1 ¥ (CNY) = {rate.rateKrwPerCny.toLocaleString('ko-KR')} ₩ (KRW)
               </p>
               <p className="text-xs text-slate-500 mt-1">
-                기준일: {rate.date} · {rate.source === 'api' ? '실시간' : rate.source === 'cache' ? '캐시' : '기본값'}
+                기준일: {rate.date} · {rate.source === 'api' ? '일 1회 갱신' : rate.source === 'cache' ? '캐시' : '기본값'}
               </p>
             </>
           )}

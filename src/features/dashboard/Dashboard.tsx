@@ -12,15 +12,12 @@ import {
 import { useFamily, useTransactions, useExchangeRate } from '@/hooks'
 import { useCurrencyStore } from '@/stores'
 import { isSupabaseConfigured } from '@/api/supabase'
-import FamilyConnect from '@/components/FamilyConnect'
-import WaitingForPartner from '@/components/WaitingForPartner'
 import { groupTransactionsByPeriod, getTotals, type PeriodType } from '@/utils/aggregate'
 
 export default function Dashboard() {
   const { data: familyData } = useFamily()
   const familyId = familyData?.family?.id ?? null
-  const bothConnected = familyData?.bothConnected ?? false
-  const { data: transactions = [], isLoading } = useTransactions(bothConnected ? familyId : null)
+  const { data: transactions = [], isLoading } = useTransactions(familyId)
   const { data: rate } = useExchangeRate()
   const { baseCurrency } = useCurrencyStore()
 
@@ -43,26 +40,17 @@ export default function Dashboard() {
       ? `${v.toLocaleString('ko-KR')} ₩`
       : `${(v / rateKrw).toFixed(2)} ¥`
 
-  if (familyId && !bothConnected && familyData) {
-    return (
-      <div className="p-5 space-y-4">
-        <h2 className="text-xl font-semibold text-slate-800 px-1">대시보드</h2>
-        <WaitingForPartner family={familyData.family} />
-      </div>
-    )
-  }
-
   if (!familyId) {
     return (
       <div className="p-5 space-y-4">
         <h2 className="text-xl font-semibold text-slate-800 px-1">대시보드</h2>
-        {isSupabaseConfigured ? (
-          <FamilyConnect />
-        ) : (
-          <div className="rounded-2xl bg-slate-100/80 p-6 text-center">
-            <p className="text-slate-600 text-sm">Supabase 연결 후 가족을 만들거나 초대 코드로 참여하면 대시보드를 이용할 수 있습니다.</p>
-          </div>
-        )}
+        <div className="rounded-2xl bg-slate-100/80 p-6 text-center">
+          <p className="text-slate-600 text-sm">
+            {isSupabaseConfigured
+              ? '가족 정보를 불러오는 중…'
+              : 'Supabase 연결 후 대시보드를 이용할 수 있습니다.'}
+          </p>
+        </div>
       </div>
     )
   }

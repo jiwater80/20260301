@@ -31,8 +31,8 @@ export function useExchangeRate(): {
       setCachedRate(res)
       return toExchangeRateState(res)
     },
-    staleTime: 1000 * 60 * 30, // 30분
-    gcTime: 1000 * 60 * 60 * 2, // 2시간
+    staleTime: 1000 * 60 * 60 * 24, // 24시간 (하루 1회)
+    gcTime: 1000 * 60 * 60 * 48, // 48시간
     retry: 2,
     retryDelay: 2000,
     placeholderData: () => {
